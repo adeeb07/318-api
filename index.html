@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe API</title>
+    <script src="/static/main.js" defer></script>
+</head>
+<body>
+    <h1>Recipe API</h1>
+    <div>
+        <h2>Add a Recipe</h2>
+        <form id="recipe-form">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="text" id="ingredients" placeholder="Ingredients (comma separated)" required>
+            <button type="submit">Add Recipe</button>
+        </form>
+    </div>
+    <div>
+        <h2>Recipes</h2>
+        <ul id="recipe-list"></ul>
+    </div>
+</body>
+</html>
