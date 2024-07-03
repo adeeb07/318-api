@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = document.getElementById('name').value;
-        const ingredients = document.getElementById('ingredients').value.split(',');
+        const ingredients = document.getElementById('ingredients').value.split(',').map(item => item.trim());
 
         const response = await fetch('/recipes', {
             method: 'POST',
