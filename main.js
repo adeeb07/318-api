@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const recipe = await response.json();
         displayRecipe(recipe);
+        form.reset();
     });
 
     async function fetchRecipes() {
