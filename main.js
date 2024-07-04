@@ -1,36 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('recipe-form');
     const recipeList = document.getElementById('recipe-list');
+    let recipes = [];
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
         const name = document.getElementById('name').value;
         const ingredients = document.getElementById('ingredients').value.split(',').map(item => item.trim());
 
-        const response = await fetch('/recipes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, ingredients })
-        });
-
-        const recipe = await response.json();
+        const recipe = { id: Date.now(), name, ingredients };
+        recipes.push(recipe);
         displayRecipe(recipe);
         form.reset();
     });
 
-    async function fetchRecipes() {
-        const response = await fetch('/recipes');
-        const recipes = await response.json();
-        recipes.forEach(recipe => displayRecipe(recipe));
-    }
-
     function displayRecipe(recipe) {
         const li = document.createElement('li');
-        li.textContent = `${recipe.name}: ${recipe.ingredients.join(', ')}`;
+        li.innerHTML = `
+            <strong>${recipe.name}</strong>
+            <p>${recipe.ingredients.join(', ')}</p>
+            <button onclick="deleteRecipe(${recipe.id})">Delete</button>
+        `;
+        li.setAttribute('data-id', recipe.id);
         recipeList.appendChild(li);
     }
 
-    fetchRecipes();
+    window.deleteRecipe = (id) => {
+        recipes = recipes.filter(recipe => recipe.id !== id);
+        const li = document.querySelector(`[data-id='${id}']`);
+        li.remove();
+    }
 });
