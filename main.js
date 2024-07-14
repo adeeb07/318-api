@@ -18,8 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
         recipeList.appendChild(li);
     }
 
-    // Load recipes from localStorage and display them
+    // Function to load recipes from localStorage and display them
     function fetchRecipes() {
+        recipeList.innerHTML = ''; // Clear the current list
         recipes.forEach(recipe => displayRecipe(recipe));
     }
 
@@ -40,10 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.deleteRecipe = (id) => {
         recipes = recipes.filter(recipe => recipe.id !== id);
         localStorage.setItem('recipes', JSON.stringify(recipes));
-        const li = document.querySelector(`[data-id='${id}']`);
-        if (li) {
-            li.remove();
-        }
+        fetchRecipes();
     }
 
     // Function to filter recipes based on search input
