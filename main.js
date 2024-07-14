@@ -2,27 +2,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('recipe-form');
     const recipeList = document.getElementById('recipe-list');
 
-    form.addEventListener('submit', async (e) => {
+    // Load recipes from localStorage
+    let recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
         const name = document.getElementById('name').value;
         const ingredients = document.getElementById('ingredients').value.split(',').map(item => item.trim());
 
-        const response = await fetch('https://example.com/api/recipes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, ingredients })
-        });
-
-        const recipe = await response.json();
+        const recipe = { id: Date.now(), name, ingredients };
+        recipes.push(recipe);
+        localStorage.setItem('recipes', JSON.stringify(recipes));
         displayRecipe(recipe);
         form.reset();
     });
 
-    async function fetchRecipes() {
-        const response = await fetch('https://example.com/api/recipes');
-        const recipes = await response.json();
+    function fetchRecipes() {
         recipes.forEach(recipe => displayRecipe(recipe));
     }
 
@@ -37,10 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
         recipeList.appendChild(li);
     }
 
-    window.deleteRecipe = async (id) => {
-        await fetch(`https://example.com/api/recipes/${id}`, {
-            method: 'DELETE'
-        });
+    window.deleteRecipe = (id) => {
+        recipes = recipes.filter(recipe => recipe.id !== id);
+        localStorage.setItem('recipes', JSON.stringify(recipes));
         const li = document.querySelector(`[data-id='${id}']`);
         li.remove();
     }
